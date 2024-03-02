@@ -1,6 +1,6 @@
 /* index.ts */
 import * as Factory from './src/lib.factory'
 
-export let lib = { 
+export { 
     Factory
 };

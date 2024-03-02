@@ -64,7 +64,7 @@ export function info() {
 /* index.ts */
 import * as Factory from './src/lib.factory'
 
-export let lib = { 
+export { 
     Factory
 };
 ```
@@ -157,8 +157,8 @@ resolve: {
 Now you can import the myLib interface in your TypeScript files within your main project as follows:
 
 ```typescript
-import * as MY from 'my-node-lib'
-MY.lib.Factory.info();
+import * as lib from 'my-node-lib'
+lib.Factory.info();
 ```
 
 **Using the Interface:**
