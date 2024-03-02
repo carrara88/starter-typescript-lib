@@ -1,4 +1,4 @@
-**Starter TypeScript Project Library for Node.js**
+**Starter TypeScript Library for Node.js**
 
 **Project Setup for the Library:**
 
@@ -30,57 +30,47 @@ npx tsc --init
 ```json
 {
   "compilerOptions": {
-    /* Language and Environment */
     "target": "es2016", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    /* Modules */
     "module": "commonjs", /* Specify what module code is generated. */
-    /* Emit */
     "outDir": "./dist", /* Specify an output folder for all emitted files. */
-    /* Interop Constraints */
     "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
     "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
-    /* Type Checking */
     "strict": true, /* Enable all strict type-checking options. */
-    /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   }
 }
 ```
 
-**Defining the library:**
+**Defining the Library:**
 
-1. Create a file named index.ts in your project directory.
-2. Inside the `/src/myLib` sample file create an entity need to be exposed by library.
+1. Create a file named `index.ts` in your project directory.
+2. Create an entity file named `/src/lib.factory.ts` in your project directory.
+3. Inside the `/src/lib.factory.ts` file create an entity need to be exposed by library.
 
 As sample place under `/src` subfolder your elements:
 
 ```typescript
-// src/myLib.ts
-export interface myLib {
-  title: string;
+// src/lib.factory.ts
+export function info() {
+    return "lib.factory.info()" 
 }
 ```
 
-**Exporting the Project Interface:**
+**Exporting the Library:**
 
 1. Export on `/index.ts` all entities created:
 
 ```typescript
-// index.ts
-export * from './src/myLib'
+/* index.ts */
+import * as Factory from './src/lib.factory'
+
+export let lib = { 
+    Factory
+};
 ```
 
-**Compiling the TypeScript Project:**
 
-1. Compile your TypeScript project using the command:
-
-```bash
-npx tsc
-```
-
-This will compile your TypeScript code into JavaScript within a dist directory.
-
-** NPM Package configuration**
+**NPM Package configuration**
 
 1. Edit NPM scripts to build your library:
 
@@ -91,7 +81,8 @@ This will compile your TypeScript code into JavaScript within a dist directory.
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev":"npx tsc",
+    "dev":"npx tsc -w",
+    "start":"npx tsc",
     "build": "npx tsc"
   },
   "keywords": [],
@@ -103,6 +94,17 @@ This will compile your TypeScript code into JavaScript within a dist directory.
 }
 ```
 
+
+**Compiling the TypeScript Project:**
+
+1. Compile your TypeScript project using the command:
+
+```bash
+npm run build
+```
+
+This will compile your TypeScript code into JavaScript within a dist directory.
+
 **Using the Library Locally in Another Project:**
 
 If you want to use the library locally in another TypeScript project without publishing it to npm, you can do so by directly linking the library path to your main project.
@@ -110,25 +112,6 @@ If you want to use the library locally in another TypeScript project without pub
 **Compiling the Library:**
 
 Make sure you have compiled your library using the TypeScript command (npx tsc).
-
-**Import local distribution library inside other local projects:**
-
-1. Copy the dist directory (or any directory where you compiled the library) from your library to your main project.
-2. Add the library path to your main project:
-
-- Open the tsconfig.json file of your main project.
-- Add the library path to the paths section as follows:
-
-```json
-"compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-        "*": ["node_modules/*", "path/to/my-node-lib/dist/*"]
-    }
-}
-```
-
-Make sure to replace `"path/to/my-node-lib/dist/*"` with the actual path of your compiled library inside your main project.
 
 **Include local library source inside other local projects:**
 
@@ -159,14 +142,23 @@ You can use Git or you can move entire source as sample under `/libs` root subfo
 ]
 ```
 
-Make sure to replace `"path/to/my-node-lib/dist/*"` with the actual path of your compiled library inside your main project.
+- Open the `webpack.config.js` file of your main project.
+- Add to the `modules: ['node_modules', path.resolve(__dirname, 'libs')]` to load local library
+
+resolve: {
+    modules: ['node_modules', path.resolve(__dirname, 'libs')],
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+
+
 
 **Importing the myLib Interface:**
 
 Now you can import the myLib interface in your TypeScript files within your main project as follows:
 
 ```typescript
-import { Project } from "my-node-lib";
+import * as MY from 'my-node-lib'
+MY.lib.Factory.info();
 ```
 
 **Using the Interface:**
